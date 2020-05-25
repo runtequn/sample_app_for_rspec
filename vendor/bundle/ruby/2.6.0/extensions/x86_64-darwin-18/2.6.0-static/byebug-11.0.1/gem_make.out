@@ -1,0 +1,19 @@
+current directory: /Users/yuji91/workspace/runteq/study/sample_app_for_rspec/vendor/bundle/ruby/2.6.0/gems/byebug-11.0.1/ext/byebug
+/Users/yuji91/.rbenv/versions/2.6.4/bin/ruby -I /Users/yuji91/.rbenv/versions/2.6.4/lib/ruby/2.6.0 -r ./siteconf20200525-5585-11d8p07.rb extconf.rb
+creating Makefile
+
+current directory: /Users/yuji91/workspace/runteq/study/sample_app_for_rspec/vendor/bundle/ruby/2.6.0/gems/byebug-11.0.1/ext/byebug
+make "DESTDIR=" clean
+
+current directory: /Users/yuji91/workspace/runteq/study/sample_app_for_rspec/vendor/bundle/ruby/2.6.0/gems/byebug-11.0.1/ext/byebug
+make "DESTDIR="
+compiling breakpoint.c
+compiling byebug.c
+compiling context.c
+compiling locker.c
+compiling threads.c
+linking shared-object byebug/byebug.bundle
+
+current directory: /Users/yuji91/workspace/runteq/study/sample_app_for_rspec/vendor/bundle/ruby/2.6.0/gems/byebug-11.0.1/ext/byebug
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 byebug.bundle ./.gem.20200525-5585-lwwhkz/byebug
