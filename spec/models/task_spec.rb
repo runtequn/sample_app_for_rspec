@@ -26,17 +26,17 @@ RSpec.describe Task, type: :model do
     it 'is invalid with a duplicate title' do
       user = User.create(email: "user@example.com", password: "password")
       user.tasks.new(title: "aaa", content: "aaa", status: :todo).save
-      task2 = user.tasks.new(title: "aaa", content: "aaa", status: :todo)
-      expect(task2.valid?).to be(false)
-      expect(task2.errors[:title]).to eq ["has already been taken"]
+      task_with_duplicated_title = user.tasks.new(title: "aaa", content: "aaa", status: :todo)
+      expect(task_with_duplicated_title.valid?).to be(false)
+      expect(task_with_duplicated_title.errors[:title]).to eq ["has already been taken"]
     end
 
     it 'is valid with another title' do
       user = User.create(email: "user@example.com", password: "password")
       user.tasks.new(title: "aaa", content: "aaa", status: :todo).save
-      task2 = user.tasks.new(title: "bbb", content: "aaa", status: :todo)
-      expect(task2.valid?).to be(true)
-      expect(task2.errors).to be_empty
+      task_with_another_title = user.tasks.new(title: "bbb", content: "aaa", status: :todo)
+      expect(task_with_another_title.valid?).to be(true)
+      expect(task_with_another_title.errors).to be_empty
     end
   end
 end
