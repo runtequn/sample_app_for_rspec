@@ -25,8 +25,8 @@ RSpec.describe Task, type: :model do
 
     it 'is invalid with a duplicate title' do
       user = FactoryBot.create(:user)
-      user.tasks.new(title: "aaa", content: "aaa", status: :todo).save
-      task_with_duplicated_title = user.tasks.new(title: "aaa", content: "aaa", status: :todo)
+      task = FactoryBot.create(:task, user: user)
+      task_with_duplicated_title = FactoryBot.build(:task, title: task.title, user: user)
       expect(task_with_duplicated_title).to be_invalid
       expect(task_with_duplicated_title.errors[:title]).to eq ["has already been taken"]
     end
