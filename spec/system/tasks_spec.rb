@@ -44,10 +44,11 @@ RSpec.describe 'Tasks', type: :system do
   end
 
   describe 'ログイン後' do
+    before { login_as(user) }
+
     describe 'タスク新規登録' do
       context 'フォームの入力値が正常' do
         it 'タスクの新規作成が成功する' do
-          login_as(user)
           visit new_task_path
           fill_in 'Title', with: 'test_title'
           fill_in 'Content', with: 'test_content'
@@ -64,7 +65,6 @@ RSpec.describe 'Tasks', type: :system do
 
       context 'タイトルが未入力' do
         it 'タスクの新規作成が失敗する' do
-          login_as(user)
           visit new_task_path
           fill_in 'Title', with: ''
           fill_in 'Content', with: 'test_content'
@@ -77,7 +77,6 @@ RSpec.describe 'Tasks', type: :system do
 
       context '登録済のタイトルを入力' do
         it 'タスクの新規作成が失敗する' do
-          login_as(user)
           visit new_task_path
           other_task = FactoryBot.create(:task)
           fill_in 'Title', with: other_task.title
@@ -93,7 +92,6 @@ RSpec.describe 'Tasks', type: :system do
     describe 'タスク編集' do
       context 'フォームの入力値が正常' do
         it 'タスクの編集が成功する' do
-          login_as(user)
           task = FactoryBot.create(:task, user: user)
           visit edit_task_path(task)
           fill_in 'Title', with: 'updated_title'
@@ -108,7 +106,6 @@ RSpec.describe 'Tasks', type: :system do
 
       context 'タイトルが未入力' do
         it 'タスクの編集が失敗する' do
-          login_as(user)
           task = FactoryBot.create(:task, user: user)
           visit edit_task_path(task)
           fill_in 'Title', with: nil
@@ -122,7 +119,6 @@ RSpec.describe 'Tasks', type: :system do
 
       context '登録済のタイトルを入力' do
         it 'タスクの編集が失敗する' do
-          login_as(user)
           task = FactoryBot.create(:task, user: user)
           visit edit_task_path(task)
           other_task = FactoryBot.create(:task, user: user)
@@ -138,7 +134,6 @@ RSpec.describe 'Tasks', type: :system do
 
     describe 'タスク削除' do
       it 'タスクの削除が成功する' do
-        login_as(user)
         task = FactoryBot.create(:task, user_id: user.id)
         visit tasks_path
         click_link 'Destroy'
