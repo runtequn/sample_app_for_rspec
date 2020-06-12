@@ -90,10 +90,12 @@ RSpec.describe 'Tasks', type: :system do
     end
 
     describe 'タスク編集' do
+      let!(:task) { create(:task, user: user) }
+      let(:other_task) { create(:task, user: user) }
+      before { visit edit_task_path(task) }
+
       context 'フォームの入力値が正常' do
         it 'タスクの編集が成功する' do
-          task = create(:task, user: user)
-          visit edit_task_path(task)
           fill_in 'Title', with: 'updated_title'
           select :done, from: 'Status'
           click_button 'Update Task'
@@ -106,8 +108,6 @@ RSpec.describe 'Tasks', type: :system do
 
       context 'タイトルが未入力' do
         it 'タスクの編集が失敗する' do
-          task = create(:task, user: user)
-          visit edit_task_path(task)
           fill_in 'Title', with: nil
           select :todo, from: 'Status'
           click_button 'Update Task'
@@ -119,9 +119,6 @@ RSpec.describe 'Tasks', type: :system do
 
       context '登録済のタイトルを入力' do
         it 'タスクの編集が失敗する' do
-          task = create(:task, user: user)
-          visit edit_task_path(task)
-          other_task = create(:task, user: user)
           fill_in 'Title', with: other_task.title
           select :todo, from: 'Status'
           click_button 'Update Task'
@@ -133,8 +130,9 @@ RSpec.describe 'Tasks', type: :system do
     end
 
     describe 'タスク削除' do
+      let!(:task) { create(:task, user: user) }
+
       it 'タスクの削除が成功する' do
-        task = create(:task, user_id: user.id)
         visit tasks_path
         click_link 'Destroy'
         expect(page.accept_confirm).to eq 'Are you sure?'
