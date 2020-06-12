@@ -1,14 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'UserSessions', type: :system do
-  def login_as(user)
-    visit root_path
-    click_link 'Login'
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: 'password'
-    click_button 'Login'
-  end
-
   describe 'ログイン前' do
     context 'フォームの入力値が正常' do
       it 'ログイン処理が成功する' do

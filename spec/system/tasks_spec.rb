@@ -1,14 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Tasks', type: :system do
-  def login_as(user)
-    visit root_path
-    click_link 'Login'
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: 'password'
-    click_button 'Login'
-  end
-
   describe 'ログイン前' do
     describe 'ページ遷移確認' do
       context 'タスクの新規登録ページにアクセス' do
