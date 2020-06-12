@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Tasks', type: :system do
-  let(:user) { FactoryBot.create(:user) }
-  let(:task) { FactoryBot.create(:task) }
+  let(:user) { create(:user) }
+  let(:task) { create(:task) }
 
   describe 'ログイン前' do
     describe 'ページ遷移確認' do
@@ -32,13 +32,13 @@ RSpec.describe 'Tasks', type: :system do
 
       context 'タスクの一覧ページにアクセス' do
         it 'すべてのユーザーのタスク情報が表示される' do
-          task_list = FactoryBot.create_list(:task, 3)
+          task_list = create_list(:task, 3)
           visit tasks_path
           expect(page).to have_content task_list[0].title
           expect(page).to have_content task_list[1].title
           expect(page).to have_content task_list[2].title
           expect(current_path).to eq tasks_path
-        end 
+        end
       end
     end
   end
@@ -78,7 +78,7 @@ RSpec.describe 'Tasks', type: :system do
       context '登録済のタイトルを入力' do
         it 'タスクの新規作成が失敗する' do
           visit new_task_path
-          other_task = FactoryBot.create(:task)
+          other_task = create(:task)
           fill_in 'Title', with: other_task.title
           fill_in 'Content', with: 'test_content'
           click_button 'Create Task'
@@ -92,7 +92,7 @@ RSpec.describe 'Tasks', type: :system do
     describe 'タスク編集' do
       context 'フォームの入力値が正常' do
         it 'タスクの編集が成功する' do
-          task = FactoryBot.create(:task, user: user)
+          task = create(:task, user: user)
           visit edit_task_path(task)
           fill_in 'Title', with: 'updated_title'
           select :done, from: 'Status'
@@ -106,7 +106,7 @@ RSpec.describe 'Tasks', type: :system do
 
       context 'タイトルが未入力' do
         it 'タスクの編集が失敗する' do
-          task = FactoryBot.create(:task, user: user)
+          task = create(:task, user: user)
           visit edit_task_path(task)
           fill_in 'Title', with: nil
           select :todo, from: 'Status'
@@ -119,9 +119,9 @@ RSpec.describe 'Tasks', type: :system do
 
       context '登録済のタイトルを入力' do
         it 'タスクの編集が失敗する' do
-          task = FactoryBot.create(:task, user: user)
+          task = create(:task, user: user)
           visit edit_task_path(task)
-          other_task = FactoryBot.create(:task, user: user)
+          other_task = create(:task, user: user)
           fill_in 'Title', with: other_task.title
           select :todo, from: 'Status'
           click_button 'Update Task'
@@ -134,7 +134,7 @@ RSpec.describe 'Tasks', type: :system do
 
     describe 'タスク削除' do
       it 'タスクの削除が成功する' do
-        task = FactoryBot.create(:task, user_id: user.id)
+        task = create(:task, user_id: user.id)
         visit tasks_path
         click_link 'Destroy'
         expect(page.accept_confirm).to eq 'Are you sure?'

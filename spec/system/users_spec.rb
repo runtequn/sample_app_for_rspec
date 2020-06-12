@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Users', type: :system do
-  let(:user) { FactoryBot.create(:user) }
+  let(:user) { create(:user) }
 
   describe 'ログイン前' do
     describe 'ユーザー新規登録' do
@@ -32,7 +32,7 @@ RSpec.describe 'Users', type: :system do
 
       context '登録済のメールアドレスを使用' do
         it 'ユーザーの新規作成が失敗する' do
-          existed_user = FactoryBot.create(:user)
+          existed_user = create(:user)
           visit new_user_path
           fill_in 'Email', with: existed_user.email
           fill_in 'Password', with: 'password'
@@ -89,7 +89,7 @@ RSpec.describe 'Users', type: :system do
       context '登録済のメールアドレスを使用' do
         it 'ユーザーの編集が失敗する' do
           visit edit_user_path(user)
-          other_user = FactoryBot.create(:user)
+          other_user = create(:user)
           fill_in 'Email', with: other_user.email
           fill_in 'Password', with: 'password'
           fill_in 'Password confirmation', with: 'password'
@@ -102,7 +102,7 @@ RSpec.describe 'Users', type: :system do
 
       context '他ユーザーの編集ページにアクセス' do
         it '編集ページへのアクセスが失敗する' do
-          other_user = FactoryBot.create(:user)
+          other_user = create(:user)
           visit edit_user_path(other_user)
           expect(page).to have_content 'Forbidden access.'
           expect(current_path).to eq user_path(user)
@@ -113,7 +113,7 @@ RSpec.describe 'Users', type: :system do
     describe 'マイページ' do
       context 'タスクを作成' do
         it '新規作成したタスクが表示される' do
-          FactoryBot.create(:task, title: 'test_title', status: :doing, user: user)
+          create(:task, title: 'test_title', status: :doing, user: user)
           visit user_path(user)
           expect(page).to have_content('You have 1 task.')
           expect(page).to have_content('test_title')
