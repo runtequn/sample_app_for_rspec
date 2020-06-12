@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Tasks', type: :system do
+  let(:user) { FactoryBot.create(:user) }
+  let(:task) { FactoryBot.create(:task) }
+
   describe 'ログイン前' do
     describe 'ページ遷移確認' do
       context 'タスクの新規登録ページにアクセス' do
@@ -13,7 +16,6 @@ RSpec.describe 'Tasks', type: :system do
 
       context 'タスクの編集ページにアクセス' do
         it '編集ページへのアクセスが失敗する' do
-          task = FactoryBot.create(:task)
           visit edit_task_path(task)
           expect(page).to have_content('Login required')
           expect(current_path).to eq login_path
@@ -22,7 +24,6 @@ RSpec.describe 'Tasks', type: :system do
 
       context 'タスクの詳細ページにアクセス' do
         it 'タスクの詳細情報が表示される' do
-          task = FactoryBot.create(:task)
           visit task_path(task)
           expect(page).to have_content task.title
           expect(current_path).to eq task_path(task)
@@ -46,7 +47,6 @@ RSpec.describe 'Tasks', type: :system do
     describe 'タスク新規登録' do
       context 'フォームの入力値が正常' do
         it 'タスクの新規作成が成功する' do
-          user = FactoryBot.create(:user)
           login_as(user)
           visit new_task_path
           fill_in 'Title', with: 'test_title'
@@ -64,7 +64,6 @@ RSpec.describe 'Tasks', type: :system do
 
       context 'タイトルが未入力' do
         it 'タスクの新規作成が失敗する' do
-          user = FactoryBot.create(:user)
           login_as(user)
           visit new_task_path
           fill_in 'Title', with: ''
@@ -78,7 +77,6 @@ RSpec.describe 'Tasks', type: :system do
 
       context '登録済のタイトルを入力' do
         it 'タスクの新規作成が失敗する' do
-          user = FactoryBot.create(:user)
           login_as(user)
           visit new_task_path
           other_task = FactoryBot.create(:task)
@@ -95,7 +93,6 @@ RSpec.describe 'Tasks', type: :system do
     describe 'タスク編集' do
       context 'フォームの入力値が正常' do
         it 'タスクの編集が成功する' do
-          user = FactoryBot.create(:user)
           login_as(user)
           task = FactoryBot.create(:task, user: user)
           visit edit_task_path(task)
@@ -111,7 +108,6 @@ RSpec.describe 'Tasks', type: :system do
 
       context 'タイトルが未入力' do
         it 'タスクの編集が失敗する' do
-          user = FactoryBot.create(:user)
           login_as(user)
           task = FactoryBot.create(:task, user: user)
           visit edit_task_path(task)
@@ -126,7 +122,6 @@ RSpec.describe 'Tasks', type: :system do
 
       context '登録済のタイトルを入力' do
         it 'タスクの編集が失敗する' do
-          user = FactoryBot.create(:user)
           login_as(user)
           task = FactoryBot.create(:task, user: user)
           visit edit_task_path(task)
@@ -143,7 +138,6 @@ RSpec.describe 'Tasks', type: :system do
 
     describe 'タスク削除' do
       it 'タスクの削除が成功する' do
-        user = FactoryBot.create(:user)
         login_as(user)
         task = FactoryBot.create(:task, user_id: user.id)
         visit tasks_path
